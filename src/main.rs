@@ -4,6 +4,8 @@ use ev3dev_lang_rust::motors::{LargeMotor, MotorPort};
 use ev3dev_lang_rust::sensors::{CompassSensor, IrSeekerSensor, SensorPort, TouchSensor};
 use ev3dev_lang_rust::Ev3Result;
 
+mod sensors;
+
 fn main() -> Ev3Result<()> {
     // Get large motor on port outA.
     let motor_left = LargeMotor::get(MotorPort::OutA)?;
@@ -23,10 +25,10 @@ fn main() -> Ev3Result<()> {
 
     // Event Loop
     loop {
-        let has_ball = touch.get_pressed_state()?;
-        let ball_sector = 5 - seeker.get_ir_direction()?;
+        let (has_ball, compass_dir, ball_sector) =
+            sensors::read_sensors(&touch, &compass, &seeker)?;
 
-        // Cannot see the ball
+        // Search for ball if it cannot be seen
         if ball_sector == 5 {
             motor_left.set_duty_cycle_sp(-50)?;
             motor_right.set_duty_cycle_sp(50)?;
@@ -49,40 +51,51 @@ fn main() -> Ev3Result<()> {
             continue;
         }
 
-        // Ball is basically centre
+        if has_ball {
+            if ball_sector == -1 {
+                // left
+                motor_left.set_duty_cycle_sp(100)?;
+                motor_right.set_duty_cycle_sp(90)?;
+                continue;
+            }
+            if ball_sector == 1 {
+                // right
+                motor_left.set_duty_cycle_sp(90)?;
+                motor_right.set_duty_cycle_sp(100)?;
+                continue;
+            }
+            if ball_sector == 0 {
+                if compass_dir < -30 {
+                    motor_left.set_duty_cycle_sp(100)?;
+                    motor_right.set_duty_cycle_sp(95)?;
+                    continue;
+                }
+                if compass_dir > 30 {
+                    motor_left.set_duty_cycle_sp(95)?;
+                    motor_right.set_duty_cycle_sp(100)?;
+                    continue;
+                }
+                motor_left.set_duty_cycle_sp(100)?;
+                motor_right.set_duty_cycle_sp(100)?;
+                continue;
+            }
+        }
+
+        // Approach ball
         if ball_sector == 0 {
             motor_left.set_duty_cycle_sp(100)?;
             motor_right.set_duty_cycle_sp(100)?;
 
             continue;
         }
-        // Ball is touching the robot
-        if has_ball {
-            if ball_sector == -1 {
-                // left
-                motor_left.set_duty_cycle_sp(100)?;
-                motor_right.set_duty_cycle_sp(90)?;
-            }
-            if ball_sector == 1 {
-                // right
-                motor_left.set_duty_cycle_sp(90)?;
-                motor_right.set_duty_cycle_sp(100)?;
-            }
-
-            continue;
-        }
 
         if ball_sector == -1 {
-            // left
             motor_left.set_duty_cycle_sp(100)?;
             motor_right.set_duty_cycle_sp(50)?;
         }
         if ball_sector == 1 {
-            // right
             motor_left.set_duty_cycle_sp(50)?;
             motor_right.set_duty_cycle_sp(100)?;
         }
     }
-
-    Ok(())
 }
