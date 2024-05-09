@@ -1,23 +1,16 @@
 extern crate ev3dev_lang_rust;
 
 use ev3dev_lang_rust::motors::{LargeMotor, MotorPort};
-use ev3dev_lang_rust::sensors::{CompassSensor, IrSeekerSensor, SensorPort, TouchSensor};
 use ev3dev_lang_rust::Ev3Result;
+use sensors::get_sensors;
 
 mod sensors;
 
 fn main() -> Ev3Result<()> {
-    // Get large motor on port outA.
     let motor_left = LargeMotor::get(MotorPort::OutA)?;
     let motor_right = LargeMotor::get(MotorPort::OutD)?;
 
-    let mut compass = CompassSensor::get(SensorPort::In4)?; // !!
-    let seeker = IrSeekerSensor::get(SensorPort::In1)?;
-    let touch = TouchSensor::get(SensorPort::In2)?;
-
-    // INITIALISATION
-    compass.set_zero()?;
-    seeker.set_mode_ac()?; // super important
+    let (touch, compass, seeker) = get_sensors()?;
 
     // Set command "run-direct".
     motor_left.run_direct()?;
@@ -32,7 +25,6 @@ fn main() -> Ev3Result<()> {
         if ball_sector == 5 {
             motor_left.set_duty_cycle_sp(-50)?;
             motor_right.set_duty_cycle_sp(50)?;
-
             continue;
         }
 
@@ -40,14 +32,12 @@ fn main() -> Ev3Result<()> {
         if ball_sector < -1 {
             motor_left.set_duty_cycle_sp(100)?;
             motor_right.set_duty_cycle_sp(0)?;
-
             continue;
         }
         // Ball is very right
         if ball_sector > 1 {
             motor_left.set_duty_cycle_sp(0)?;
             motor_right.set_duty_cycle_sp(100)?;
-
             continue;
         }
 
@@ -85,7 +75,6 @@ fn main() -> Ev3Result<()> {
         if ball_sector == 0 {
             motor_left.set_duty_cycle_sp(100)?;
             motor_right.set_duty_cycle_sp(100)?;
-
             continue;
         }
 
