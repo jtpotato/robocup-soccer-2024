@@ -26,7 +26,6 @@ fn main() -> Ev3Result<()> {
         let (has_ball, compass_dir, ball_sector) =
             sensors::read_sensors(&touch, &compass, &seeker)?;
 
-        // Search for ball if it cannot be seen
         if ball_sector == 5 {
             regimes::search_for_ball(&motor_left, &motor_right)?;
             continue;
