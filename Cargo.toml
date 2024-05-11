@@ -9,5 +9,5 @@ ev3dev-lang-rust = "0.14.0"
 [profile.release]
 lto = "fat"
 codegen-units = 1
-strip = true
+strip = "symbols"
 panic = "abort"
