@@ -32,15 +32,15 @@ fn main() -> Ev3Result<()> {
         }
 
         if has_ball {
-            regimes::follow_compass(compass_dir, &motor_left, &motor_right)?;
+            regimes::correction(compass_dir, 30, &motor_left, &motor_right)?;
             continue;
         }
 
         if ball_sector.abs() > 1 {
-            regimes::large_correction(ball_sector, &motor_left, &motor_right)?;
+            regimes::correction(ball_sector, 100, &motor_left, &motor_right)?;
             continue;
         }
 
-        regimes::approach_ball(ball_sector, &motor_left, &motor_right)?;
+        regimes::correction(ball_sector, 30, &motor_left, &motor_right)?;
     }
 }
