@@ -1,6 +1,6 @@
 # ferret
 
-![AI art of ferret kicking a soccer ball](assets/image.png)
+<img src="assets/image.png" width="200" alt="AI art of a ferret kicking a soccer ball">
 
 Program for a robot in Robocup Soccer (RCJA 2024 Rules)
 
