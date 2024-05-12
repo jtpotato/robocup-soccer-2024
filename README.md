@@ -1,4 +1,6 @@
-# soccer-kicker
+# ferret
+
+![AI art of ferret kicking a soccer ball](assets/image.png)
 
 Program for a robot in Robocup Soccer (RCJA 2024 Rules)
 

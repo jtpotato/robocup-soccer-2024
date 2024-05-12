@@ -25,6 +25,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "ferret"
+version = "0.1.0"
+dependencies = [
+ "ev3dev-lang-rust",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.154"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -52,13 +59,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
 dependencies = [
  "proc-macro2",
-]
-
-[[package]]
-name = "soccer-kicker"
-version = "0.1.0"
-dependencies = [
- "ev3dev-lang-rust",
 ]
 
 [[package]]
