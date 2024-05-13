@@ -1,5 +1,8 @@
 extern crate ev3dev_lang_rust;
 
+use std::thread;
+use std::time::Duration;
+
 use ev3dev_lang_rust::motors::{LargeMotor, MotorPort};
 use ev3dev_lang_rust::Ev3Result;
 use sensors::get_sensors;
@@ -16,9 +19,14 @@ fn main() -> Ev3Result<()> {
     // Set command "run-direct".
     motor_left.run_direct()?;
     motor_right.run_direct()?;
+    // force library to open file handler to write instructions to motor.
+    motor_left.set_duty_cycle_sp(0)?;
+    motor_right.set_duty_cycle_sp(0)?;
 
     // Event Loop
     loop {
+        thread::sleep(Duration::from_millis(1)); // apparently, this is necessary to allow linux to do background stuff.
+
         if motor_left.is_stalled()? || motor_right.is_stalled()? {
             regimes::exit_stall(&motor_left, &motor_right)?;
         }
