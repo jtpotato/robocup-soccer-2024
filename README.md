@@ -4,6 +4,8 @@
 
 Program for a robot in Robocup Soccer (RCJA 2024 Rules), using [pixix4/ev3dev-lang-rust](https://github.com/pixix4/ev3dev-lang-rust)
 
+Designed for a typical two-motor "tank" drivetrain with normal polarity. (We did not have resources for 4-motor omniwheels)
+
 ## Features
 
 - [x] Follows Ball
@@ -17,7 +19,7 @@ Program for a robot in Robocup Soccer (RCJA 2024 Rules), using [pixix4/ev3dev-la
 - It's fast
 - It's cool
 - The [US Government](https://arc.net/l/quote/xfwrzrvl) says you should use Rust 🦅
-- I would use a garbage collector if I could, but performance 😔
+- I dont really have to worry about memory
 - Actual type system
 
 **... use Linux? 🐧**
