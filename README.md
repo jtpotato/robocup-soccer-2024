@@ -10,6 +10,7 @@ Designed for a typical two-motor "tank" drivetrain with normal polarity. (We did
 
 - [x] Follows Ball
 - [x] Follows initial compass direction
+- [x] Detects whether the robot has a ball or not.
 - [x] Different control regimes depending on whether robot has/does not have ball.
 
 ## Why did you... ⁉️
