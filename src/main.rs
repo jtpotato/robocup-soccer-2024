@@ -26,13 +26,14 @@ fn main() -> Ev3Result<()> {
     motor_right.set_duty_cycle_sp(0)?;
 
     let indicator = default_indicator(Led::new()?);
+    let mut prev_avg_col = 0;
 
     // Event Loop
     loop {
         thread::sleep(Duration::from_millis(1)); // apparently, this is necessary to allow linux to do background stuff.
 
         let (has_ball, compass_dir, ball_sector) =
-            sensors::read_sensors(&col_sensor, &compass, &seeker)?;
+            sensors::read_sensors(&col_sensor, &mut prev_avg_col, &compass, &seeker)?;
 
         if ball_sector == 5 {
             indicator.update_indicators(SensingRegime::NoBall)?;

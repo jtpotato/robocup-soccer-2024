@@ -18,6 +18,7 @@ pub fn get_sensors() -> Ev3Result<(ColorSensor, CompassSensor, IrSeekerSensor)> 
 
 pub fn read_sensors(
     col_sensor: &ColorSensor,
+    prev_avg_col_value: &mut i32,
     compass_sensor: &CompassSensor,
     ir_sensor: &IrSeekerSensor,
 ) -> Ev3Result<(bool, i32, i32)> {
@@ -26,8 +27,14 @@ pub fn read_sensors(
         compass_dir -= 360;
     }
 
+    let col_value = col_sensor.get_color()?;
+
+    // calculate average colour value
+    let avg_col_value = (0.999 * (*prev_avg_col_value as f32) + 0.001 * col_value as f32) as i32;
+    *prev_avg_col_value = avg_col_value;
+
     let ball_sector = 5 - ir_sensor.get_ir_direction()?;
-    let has_ball = col_sensor.get_color()? > 8;
+    let has_ball = avg_col_value > 10;
 
     return Ok((has_ball, compass_dir, ball_sector));
 }
