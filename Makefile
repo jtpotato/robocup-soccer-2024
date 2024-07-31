@@ -1,6 +1,6 @@
 SRC = ./target/armv5te-unknown-linux-musleabi/release/ferret
 BRICK_NAME = robot@ev3dev.local
-NAME = ferret
+NAME = ferret2
 
 build:
 # Copy the source code to the brick, make folder if necessary

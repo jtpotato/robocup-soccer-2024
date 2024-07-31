@@ -30,7 +30,7 @@ pub fn read_sensors(
     let col_value = col_sensor.get_color()?;
 
     // calculate average colour value
-    let avg_col_value = (0.999 * (*prev_avg_col_value as f32) + 0.001 * col_value as f32) as i32;
+    let avg_col_value = (0.99 * (*prev_avg_col_value as f32) + 0.01 * col_value as f32) as i32;
     *prev_avg_col_value = avg_col_value;
 
     let ball_sector = 5 - ir_sensor.get_ir_direction()?;

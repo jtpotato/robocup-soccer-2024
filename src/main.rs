@@ -59,10 +59,10 @@ fn main() -> Ev3Result<()> {
         }
 
         if ball_sector.abs() > 1 {
-            regimes::correction(ball_sector, 60, 80, &motor_left, &motor_right)?;
+            regimes::correction(ball_sector, 60, 100, &motor_left, &motor_right)?;
             continue;
         }
 
-        regimes::correction(ball_sector, 5, 80, &motor_left, &motor_right)?;
+        regimes::correction(ball_sector, 5, 100, &motor_left, &motor_right)?;
     }
 }
